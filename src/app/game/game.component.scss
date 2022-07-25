@@ -1,0 +1,86 @@
+.field {
+    background-image: url('/assets/img/background2.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardStack {
+    position: relative;
+
+    img {
+        position: absolute;
+        width: 120px;
+    }
+}
+
+.topCard {
+    cursor: pointer;
+    transition: all 125ms ease-in-out;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+.pickCard {
+    animation: pickCardAnimation 1s ease-in-out;
+    transform: scale(1) translateX(140px) translateY(-180px) rotate(-10deg);
+}
+
+@keyframes pickCardAnimation {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.7);
+    }
+
+    60% {
+        transform: scale(1.7);
+    }
+
+    100% {
+        transform: scale(1) translateX(140px) translateY(-180px) rotate(-10deg);
+    }
+}
+
+.playedCard {
+    right: 25px;
+    transform: scale(1) translateX(140px) translateY(-180px) rotate(-10deg);
+}
+
+.playerPosition {
+    position: absolute;
+    right: 0;
+}
+
+.btnAdd {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+}
+
+.pinBottom {
+    position: absolute;
+    bottom: 32px;
+    left: 100px;
+    right: 100px;
+}
+
+.board{
+    position: absolute;
+    height: 90vh;
+    width: 90vw;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

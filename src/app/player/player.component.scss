@@ -1,0 +1,40 @@
+.player {
+    width: 75px;
+    display: flex;
+    align-items: center;
+    background-color: #6c6c6c;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    border-left: solid 1px white;
+    border-top: solid 1px white;
+    border-bottom: solid 1px white;
+
+
+    span {
+        font-size: 0;
+        margin-left: 16px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: rgba(255, 255, 255, 0.574);
+    }
+
+    img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 100%;
+        background-color: white;
+    }
+}
+
+.playActive {
+    width: 300px;
+
+    background-color: #947513 !important;
+
+    span {
+        color: white !important;
+        font-size: 32px;
+
+    }
+}
+
