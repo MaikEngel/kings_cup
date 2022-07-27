@@ -29,10 +29,13 @@ export class StartScreenComponent implements OnInit {
 
   newGame() {
     const coll = collection(this.firestore, 'games');
-    this.route.params.subscribe(async () => {
+    this.route.params.subscribe(async (params) => {
+      console.log(params);
+      
       this.game = new Game();
       setDoc(doc(coll), { game: this.game.toJson() });
-      const docColl = doc(coll).id;
+      const docColl = doc(coll);
+      console.log(docColl);
       this.router.navigateByUrl('/game/' + docColl);
     })
   }

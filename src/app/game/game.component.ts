@@ -20,10 +20,10 @@ export class GameComponent implements OnInit {
   currentCard: string = '';
   games$: Observable<any>;
   game: Game;
-  constructor(private route: ActivatedRoute, public dialog: MatDialog, private firestore: Firestore, ) {
+  constructor(private route: ActivatedRoute, public dialog: MatDialog, private firestore: Firestore,) {
     const coll = collection(firestore, 'games');
     this.games$ = collectionData(coll);
-    
+
   }
 
   ngOnInit(): void {
@@ -32,12 +32,9 @@ export class GameComponent implements OnInit {
 
 
   newGame() {
-    const coll = collection(this.firestore, 'games');
-    this.route.params.subscribe(async () => {
-      this.game = new Game();
-      const docColl = doc(coll).id;
-      setDoc(doc(coll), { game: this.game.toJson() });
-    })
+    this.game = new Game();
+    console.log('Muss ich wissen', this.game);
+
   }
 
   pickCard() {
