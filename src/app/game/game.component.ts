@@ -76,16 +76,14 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
-        this.saveGame();
       }
     });
   }
 
   async saveGame() {
     const coll = collection(this.firestore, 'games');
-    console.log(this.game);
     const docRef = doc(coll, this.gameId);
-    await setDoc(docRef, { game: this.game.toJson() });
+    await setDoc(docRef, { game: this.game });
   }
 }
 function id(id: any, string: any) {
