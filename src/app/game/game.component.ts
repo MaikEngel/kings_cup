@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/models/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
-import { Firestore, collectionData, collection, setDoc, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection, setDoc, doc, getDoc, CollectionReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
+import { User } from '@angular/fire/auth';
+import { get } from '@angular/fire/database';
 
 @Component({
   selector: 'app-game',
@@ -18,25 +20,24 @@ export class GameComponent implements OnInit {
   currentCard: string = '';
   games$: Observable<any>;
   game: Game;
-  constructor(private route: ActivatedRoute, public dialog: MatDialog, private firestore: Firestore) {
+  constructor(private route: ActivatedRoute, public dialog: MatDialog, private firestore: Firestore, ) {
     const coll = collection(firestore, 'games');
     this.games$ = collectionData(coll);
-
-    this.games$.subscribe((newGames) => {
-      this.game = newGames;
-      this.route.params.subscribe((params) => {
-        console.log(params['id']);
-
-      })
-    })
+    
   }
 
   ngOnInit(): void {
     this.newGame();
   }
 
+
   newGame() {
-    this.game = new Game();
+    const coll = collection(this.firestore, 'games');
+    this.route.params.subscribe(async () => {
+      this.game = new Game();
+      const docColl = doc(coll).id;
+      setDoc(doc(coll), { game: this.game.toJson() });
+    })
   }
 
   pickCard() {
@@ -68,3 +69,7 @@ export class GameComponent implements OnInit {
     });
   }
 }
+function id(id: any, string: any) {
+  throw new Error('Function not implemented.');
+}
+

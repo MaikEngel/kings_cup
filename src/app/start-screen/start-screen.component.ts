@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Firestore, collectionData, collection, setDoc, doc } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection, setDoc, doc, getDoc, CollectionReference } from '@angular/fire/firestore';
 import { Game } from 'src/models/game';
 import { Observable } from 'rxjs';
 
@@ -20,24 +20,21 @@ export class StartScreenComponent implements OnInit {
 
     this.games$.subscribe((newGames) => {
       this.game = newGames;
-      this.route.params.subscribe((params) => {
-        console.log('params', params);
-      })
     })
-   }
+  }
 
-
-   
   ngOnInit(): void {
 
   }
 
-
   newGame() {
-    let game = new Game();
     const coll = collection(this.firestore, 'games');
-    setDoc(doc(coll), { game: game.toJson() }); 
-    
+    this.route.params.subscribe(async () => {
+      this.game = new Game();
+      setDoc(doc(coll), { game: this.game.toJson() });
+      const docColl = doc(coll).id;
+      this.router.navigateByUrl('/game/' + docColl);
+    })
   }
 
 }
