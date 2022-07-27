@@ -27,14 +27,14 @@ export class StartScreenComponent implements OnInit {
 
   }
 
-  newGame() {
+  async newGame() {
     const coll = collection(this.firestore, 'games');
     this.route.params.subscribe(async (params) => {
       this.game = new Game();
-      setDoc(doc(coll), { game: this.game.toJson() });
-      const docColl = doc(coll).id;
-      console.log(docColl);
-      this.router.navigateByUrl('/game/' + docColl);
+      const docRef = doc(coll);
+      await setDoc(docRef, { game: this.game.toJson() });
+      console.log(docRef.id);
+      this.router.navigateByUrl('/game/' + docRef.id);
     })
   }
 
@@ -42,4 +42,3 @@ export class StartScreenComponent implements OnInit {
 function then(arg0: () => void) {
   throw new Error('Function not implemented.');
 }
-
