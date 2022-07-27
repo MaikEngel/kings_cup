@@ -22,33 +22,32 @@ export class GameComponent implements OnInit {
   games$: Observable<any>;
   game: Game;
   gameId: string;
+  currentGame: any;
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog, private firestore: Firestore,) {
-    const coll = collection(firestore, 'games');
+  constructor(private route: ActivatedRoute, public dialog: MatDialog, private firestore: Firestore,) { }
+
+  ngOnInit(): void {
+    const coll = collection(this.firestore, 'games');
     this.games$ = collectionData(coll);
-
     this.route.paramMap.subscribe(async (pm) => {
       const gameID = pm.get('id');
       this.gameId = gameID;
       const docRef = doc(coll, this.gameId);
       const docSnap = await getDoc(docRef);
+      this.currentGame = docSnap.data()['game'];
       if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
+        console.log("Document data:", docSnap.data()['game']);
+        this.newGame();
       } else {
         // doc.data() will be undefined in this case
         console.log("No such document!");
       }
     })
-
-  }
-
-  ngOnInit(): void {
-    this.newGame();
   }
 
 
   newGame() {
-    this.game = new Game();
+    this.game = this.currentGame;
   }
 
   pickCard() {
@@ -57,7 +56,7 @@ export class GameComponent implements OnInit {
       this.pickCardAnimation = true;
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
-      
+
       setTimeout(() => {
         this.game.playedCard.push(this.currentCard);
         this.pickCardAnimation = false;
