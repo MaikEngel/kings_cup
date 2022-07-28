@@ -33,7 +33,6 @@ export class StartScreenComponent implements OnInit {
       this.game = new Game();
       const docRef = doc(coll);
       await setDoc(docRef, { game: this.game.toJson() });
-      console.log(docRef.id);
       this.router.navigateByUrl('/game/' + docRef.id);
     })
   }

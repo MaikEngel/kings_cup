@@ -17,8 +17,6 @@ import { update } from '@firebase/database';
 })
 
 export class GameComponent implements OnInit {
-  pickCardAnimation = false;
-  currentCard: string = '';
   games$: Observable<any>;
   game: Game;
   gameId: string;
@@ -27,41 +25,37 @@ export class GameComponent implements OnInit {
   constructor(private route: ActivatedRoute, public dialog: MatDialog, private firestore: Firestore,) { }
 
   ngOnInit(): void {
-    const coll = collection(this.firestore, 'games');
-    this.games$ = collectionData(coll);
     this.route.paramMap.subscribe(async (pm) => {
+      const coll = collection(this.firestore, 'games');
+      this.games$ = collectionData(coll);
       const gameID = pm.get('id');
       this.gameId = gameID;
       const docRef = doc(coll, this.gameId);
-
-
       const docSnap = await getDoc(docRef);
       this.currentGame = docSnap.data()['game'];
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data()['game']);
         this.newGame();
       } else {
-        // doc.data() will be undefined in this case
         console.log("No such document!");
       }
     })
   }
-
 
   newGame() {
     this.game = this.currentGame;
   }
 
   pickCard() {
-    if (!this.pickCardAnimation && this.game.players.length >= 2) {
-      this.currentCard = this.game.stack.pop();
-      this.pickCardAnimation = true;
+    if (!this.game.pickCardAnimation && this.game.players.length >= 2) {
+      this.game.currentCard = this.game.stack.pop();
+      this.game.pickCardAnimation = true;
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
 
       setTimeout(() => {
-        this.game.playedCard.push(this.currentCard);
-        this.pickCardAnimation = false;
+        this.game.playedCard.push(this.game.currentCard);
+        this.game.pickCardAnimation = false;
         this.saveGame();
       }, 1000);
     }

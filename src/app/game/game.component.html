@@ -5,17 +5,17 @@
         <img *ngFor="let c of [0, 1, 2, 3]; let i = index;" [ngStyle]="{'right.px': i * 5}"
         src="assets/img/cards/card_cover.png" alt="">
         <img (click)="pickCard()" class="topCard" style="right: 25px;" src="assets/img/cards/card_cover.png" alt="">
-        <img *ngFor="let card of game.playedCard" src="assets/img/cards/{{card}}.png" class="playedCard">
-        <img (click)="pickCard()" *ngIf="pickCardAnimation" class="pickCard" style="right: 25px;"
-        src="assets/img/cards/{{currentCard}}.png" alt="">
+        <img *ngFor="let card of game?.playedCard" src="assets/img/cards/{{card}}.png" class="playedCard">
+        <img (click)="pickCard()" *ngIf="game?.pickCardAnimation" class="pickCard" style="right: 25px;"
+        src="assets/img/cards/{{game?.currentCard}}.png" alt="">
     </div>
     
 </div>
 
-<app-player *ngFor="let player of game.players; let i = index;" [ngStyle]="{'top.px': 100 + i * 90}" [name]="player"
-    [playerActive]="i == game.currentPlayer" class="playerPosition"></app-player>
+<app-player *ngFor="let player of game?.players; let i = index;" [ngStyle]="{'top.px': 100 + i * 90}" [name]="player"
+    [playerActive]="i == game?.currentPlayer" class="playerPosition"></app-player>
 
-<app-game-info [card]="currentCard" class="pinBottom"></app-game-info>
+<app-game-info [card]="game?.currentCard" class="pinBottom"></app-game-info>
 
 <button mat-fab color="basic" class="btnAdd" (click)="openDialog()">
     <mat-icon>add</mat-icon>
