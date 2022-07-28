@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/models/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
-import { Firestore, collectionData, collection, setDoc, doc, getDoc, CollectionReference, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection, setDoc, doc, getDoc, CollectionReference, updateDoc, onSnapshot } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
@@ -34,7 +34,6 @@ export class GameComponent implements OnInit {
       const docSnap = await getDoc(docRef);
       this.currentGame = docSnap.data()['game'];
       if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data()['game']);
         this.newGame();
       } else {
         console.log("No such document!");
@@ -44,9 +43,14 @@ export class GameComponent implements OnInit {
 
   newGame() {
     this.game = this.currentGame;
+    const unsub = onSnapshot(collection(this.firestore, 'games'), (doc) => {
+      this.game = this.currentGame;
+      console.log(doc)
+    });
   }
 
   pickCard() {
+
     if (!this.game.pickCardAnimation && this.game.players.length >= 2) {
       this.game.currentCard = this.game.stack.pop();
       this.game.pickCardAnimation = true;
@@ -57,6 +61,7 @@ export class GameComponent implements OnInit {
         this.game.playedCard.push(this.game.currentCard);
         this.game.pickCardAnimation = false;
         this.saveGame();
+        // this.realTimeUpdate()
       }, 1000);
     }
     else {
@@ -76,6 +81,7 @@ export class GameComponent implements OnInit {
       }
     });
   }
+
 
   async saveGame() {
     const coll = collection(this.firestore, 'games');
