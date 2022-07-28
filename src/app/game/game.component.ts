@@ -34,18 +34,17 @@ export class GameComponent implements OnInit {
       const docSnap = await getDoc(docRef);
       this.currentGame = docSnap.data()['game'];
       if (docSnap.exists()) {
-        this.newGame();
+        this.newGame(docRef);
       } else {
         console.log("No such document!");
       }
     })
   }
 
-  newGame() {
+  newGame(docRef) {
     this.game = this.currentGame;
-    const unsub = onSnapshot(collection(this.firestore, 'games'), (doc) => {
-      this.game = this.currentGame;
-      console.log(doc)
+    const unsub = onSnapshot(docRef, (doc) => {
+      this.game = doc.data()['game'];
     });
   }
 
@@ -56,6 +55,7 @@ export class GameComponent implements OnInit {
       this.game.pickCardAnimation = true;
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
+      this.saveGame();
 
       setTimeout(() => {
         this.game.playedCard.push(this.game.currentCard);
