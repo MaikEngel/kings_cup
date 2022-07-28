@@ -33,6 +33,8 @@ export class GameComponent implements OnInit {
       const gameID = pm.get('id');
       this.gameId = gameID;
       const docRef = doc(coll, this.gameId);
+
+
       const docSnap = await getDoc(docRef);
       this.currentGame = docSnap.data()['game'];
       if (docSnap.exists()) {
@@ -76,6 +78,7 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.saveGame()
       }
     });
   }
