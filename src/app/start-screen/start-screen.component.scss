@@ -9,14 +9,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
-    img {
-        height: 100vh;
-    }
 }
 
 
-.startLabelBox{
+.startLabelBox {
     position: absolute;
     left: 0;
     right: 0;
@@ -24,13 +20,48 @@
     display: flex;
     justify-content: center;
 
-    img {
-        width: 61vh;
-        height: auto;
-        cursor: pointer;
+}
 
-        &:hover {
-            filter: brightness(1.2)
-        }
-    };
+.startButton {
+    width: 61vh;
+    height: auto;
+    cursor: pointer;
+
+    &:hover {
+        filter: brightness(1.2)
+    }
+}
+
+@media(max-width: 1279px) {
+
+    .startLogo {
+        width: 80vw;
+    }
+
+    .startButton {
+        width: 50vw !important;
+        margin-bottom: 40px;
+    }
+}
+
+@media(max-width: 768px) {
+
+    .startLogo {
+        width: 80vw;
+    }
+
+    .startButton {
+        width: 360px !important;
+    }
+}
+
+@media(max-width: 480px) {
+
+    .startLogo {
+        width: 80vw;
+    }
+
+    .startButton {
+        width: 260px !important;
+    }
 }

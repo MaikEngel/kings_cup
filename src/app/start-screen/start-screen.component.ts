@@ -17,7 +17,6 @@ export class StartScreenComponent implements OnInit {
   constructor(private route: ActivatedRoute, private firestore: Firestore, private router: Router) {
     const coll = collection(firestore, 'games');
     this.games$ = collectionData(coll);
-
     this.games$.subscribe((newGames) => {
       this.game = newGames;
     })

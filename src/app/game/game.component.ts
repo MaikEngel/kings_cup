@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { Firestore, collectionData, collection, setDoc, doc, getDoc, CollectionReference, updateDoc, onSnapshot } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
 import { User } from '@angular/fire/auth';
 import { get } from '@angular/fire/database';
@@ -21,8 +21,9 @@ export class GameComponent implements OnInit {
   game: Game;
   gameId: string;
   currentGame: any;
+  public gameData: any;
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog, private firestore: Firestore,) { }
+  constructor(private route: ActivatedRoute, public dialog: MatDialog, private firestore: Firestore, private router: Router) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(async (pm) => {
@@ -33,24 +34,25 @@ export class GameComponent implements OnInit {
       const docRef = doc(coll, this.gameId);
       const docSnap = await getDoc(docRef);
       this.currentGame = docSnap.data()['game'];
+      this.gameData = docRef;
       if (docSnap.exists()) {
-        this.newGame(docRef);
+        this.newGame();
       } else {
         console.log("No such document!");
       }
     })
   }
 
-  newGame(docRef) {
+  newGame() {
     this.game = this.currentGame;
-    const unsub = onSnapshot(docRef, (doc) => {
+    const unsub = onSnapshot(this.gameData, (doc) => {
       this.game = doc.data()['game'];
     });
   }
 
   pickCard() {
 
-    if (!this.game.pickCardAnimation && this.game.players.length >= 2) {
+    if (!this.game.pickCardAnimation && this.game.players.length >= 2 && this.game.stack.length > 0) {
       this.game.currentCard = this.game.stack.pop();
       this.game.pickCardAnimation = true;
       this.game.currentPlayer++;
@@ -64,8 +66,12 @@ export class GameComponent implements OnInit {
         // this.realTimeUpdate()
       }, 1000);
     }
-    else {
+    if (this.game.players.length < 2) {
       alert('Create 2 player!')
+    }
+    if (this.game.stack.length == 0) {
+      console.log(this.gameData.id);
+      this.router.navigateByUrl('/gameover');
     }
   }
 
@@ -82,13 +88,23 @@ export class GameComponent implements OnInit {
     });
   }
 
-
   async saveGame() {
     const coll = collection(this.firestore, 'games');
     const docRef = doc(coll, this.gameId);
     await setDoc(docRef, { game: this.game });
   }
+
+  refreshGame(){
+  this.game = new Game();
+  this.game = this.currentGame;
+    const unsub = onSnapshot(this.gameData, (doc) => {
+      this.game = doc.data()['game'];
+    });
+  this.saveGame();
+  }
 }
+
+
 function id(id: any, string: any) {
   throw new Error('Function not implemented.');
 }

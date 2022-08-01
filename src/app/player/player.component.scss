@@ -2,7 +2,7 @@
     width: 75px;
     display: flex;
     align-items: center;
-    background-color: #6c6c6c;
+    background-color: #6c6c6c74;
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
     border-left: solid 1px white;
@@ -15,12 +15,13 @@
         margin-left: 16px;
         font-family: Arial, Helvetica, sans-serif;
         color: rgba(255, 255, 255, 0.574);
+        overflow-wrap: anywhere;
     }
 
     img {
         width: 70px;
         height: 70px;
-        object-fit: cover;
+        object-fit: cover;              
         border-radius: 100%;
         background-color: white;
     }
@@ -28,13 +29,20 @@
 
 .playActive {
     width: 300px;
-
-    background-color: #947513 !important;
+    background-color: #9476139a !important;
 
     span {
         color: white !important;
         font-size: 32px;
-
     }
 }
 
+@media(max-width: 480px) {
+    .playActive {
+        width: 200px;
+    
+        span {
+            font-size: 24px;
+        }
+    }
+}
