@@ -78,7 +78,7 @@
     right: 100px;
 }
 
-.board{
+.board {
     position: absolute;
     height: 90vh;
     width: 90vw;
@@ -88,7 +88,26 @@
     align-items: center;
 }
 
+.playerContainer {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    overflow-y: scroll;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    height: 400px;
+    width: 330px;
+}
+
 @media(max-width: 480px) {
+    .playerContainer {
+        top: 160px;
+        right: 0;
+        height: 335px;
+        width: 172px;
+    }
+
     .pinBottom {
         top: 16px;
         bottom: unset;
@@ -97,7 +116,7 @@
     }
 
     .cardStack {
-    
+
         img {
             width: 95px;
         }
@@ -111,17 +130,18 @@
         0% {
             transform: scale(1);
         }
-    
+
         50% {
             transform: scale(1.7);
         }
-    
+
         60% {
             transform: scale(1.7);
         }
-    
+
         100% {
             transform: scale(1) translateX(20px) translateY(-180px) rotate(-10deg);
         }
     }
 }
+

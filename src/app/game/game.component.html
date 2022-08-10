@@ -7,17 +7,20 @@
         <img *ngFor="let card of game?.playedCard" src="assets/img/cards/{{card}}.png" class="playedCard">
         <img (click)="pickCard()" *ngIf="game?.pickCardAnimation" class="pickCard" style="right: 25px;"
             src="assets/img/cards/{{game?.currentCard}}.png">
-        <img *ngIf="game?.stack.length == 0" src="assets/img/cards/last_card.png" >
+        <img *ngIf="game?.stack.length == 0" src="assets/img/cards/last_card.png">
     </div>
 </div>
 
-<app-player *ngFor="let player of game?.players; let i = index;" [ngStyle]="{'top.px': 100 + i * 90}" [name]="player"
-    [playerActive]="i == game?.currentPlayer" class="playerPosition"></app-player>
-<app-game-info [card]="game?.currentCard" class="pinBottom"></app-game-info>
+<div class="playerContainer">
+    <app-player *ngFor="let player of game?.players; let i = index;" [ngStyle]="{'top.px': 12 + i * 90}"
+        [name]="player" [playerActive]="i == game?.currentPlayer" class="playerPosition"></app-player>
+    </div>
 
+    <app-game-info [card]="game?.currentCard" class="pinBottom"></app-game-info>
+    
 <div class="btnAdd">
     <button mat-fab color="basic" (click)="openDialog()" [ngStyle]="{'margin-top.px': 8}">
-            <mat-icon>add</mat-icon>
+        <mat-icon>add</mat-icon>
     </button>
     <button mat-fab color="basic" (click)="refreshGame()" [ngStyle]="{'margin-top.px': 8}">
         <mat-icon>refresh</mat-icon>
